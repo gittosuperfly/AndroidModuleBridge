@@ -16,15 +16,13 @@ For a common component-based Android application, the communication capability b
 
 # How to join
 
-**Step 1.** Add the jcenter or my repository to your build file
+**Step 1.** Add the jcenter repository to your build file
 
 ```groovy
 buildscript {
     repositories {
         ...
         jcenter()
-        //or
-        maven { url 'https://dl.bintray.com/broccoli/bridge' }
     }
 }
 
@@ -32,8 +30,6 @@ allprojects {
     repositories {
         ...
         jcenter()
-        //or
-        maven { url 'https://dl.bintray.com/broccoli/bridge' }
     }
 }
 ```
