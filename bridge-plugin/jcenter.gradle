@@ -53,22 +53,6 @@ if (project.ext.pomFile.exists()) {
     task preparePublication(dependsOn: signJars)
 }
 
-def getSignatureFiles = {
-    def allFiles = project.tasks.signJars.signatureFiles.collect{it}
-    def signedSources = allFiles.find{ it.name.contains('-sources') }
-    def signedJavadoc = allFiles.find{ it.name.contains('-javadoc') }
-    def signedJar = (allFiles - [signedSources, signJars])[0]
-    return [
-            [archive: signedSources, classifier: 'sources', extension: 'jar.asc'],
-            [archive: signedJavadoc, classifier: 'javadoc', extension: 'jar.asc'],
-            [archive: signedJar, classifier: 'null', extension: 'jar.asc']
-    ]
-}
-
-def getPomSignature = {
-    return project.tasks.signPom.signatureFiles.collect{ it }[0]
-}
-
 install {
     repositories.mavenInstaller {
         pom {
