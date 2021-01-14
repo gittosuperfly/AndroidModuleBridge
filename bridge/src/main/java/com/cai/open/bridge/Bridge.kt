@@ -1,4 +1,4 @@
-package com.cai.bridge
+package com.cai.open.bridge
 
 
 @Target(AnnotationTarget.ANNOTATION_CLASS, AnnotationTarget.CLASS)
