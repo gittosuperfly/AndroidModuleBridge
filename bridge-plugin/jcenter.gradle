@@ -1,0 +1,122 @@
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+apply plugin: 'java'
+apply plugin: 'signing'
+
+def siteUrl = 'https://github.com/gittosuperfly/AndroidModuleBridge' // 项目主页。
+def gitUrl = 'https://github.com/gittosuperfly/AndroidModuleBridge.git' // Git仓库的url。
+
+group = "com.cai.open"
+version = "1.0.0"
+project.archivesBaseName = "bridge-plugin"
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+task sourceJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+ext {
+    pomFilePath = "${project.buildDir.absolutePath}/tmp/pom.xml"
+    pomFile = file(pomFilePath)
+}
+
+configurations {
+    pom
+}
+
+artifacts {
+    archives jar
+    archives sourceJar
+    archives javadocJar
+    if (pomFile.exists()) {
+        pom pomFile
+    }
+}
+
+task signJars(type: Sign, dependsOn: [jar, javadocJar, sourceJar]) {
+    sign configurations.archives
+}
+
+task signPom(type: Sign) {
+    sign configurations.pom
+}
+
+if (project.ext.pomFile.exists()) {
+    task preparePublication(dependsOn: [signJars, signPom])
+} else {
+    task preparePublication(dependsOn: signJars)
+}
+
+def getSignatureFiles = {
+    def allFiles = project.tasks.signJars.signatureFiles.collect{it}
+    def signedSources = allFiles.find{ it.name.contains('-sources') }
+    def signedJavadoc = allFiles.find{ it.name.contains('-javadoc') }
+    def signedJar = (allFiles - [signedSources, signJars])[0]
+    return [
+            [archive: signedSources, classifier: 'sources', extension: 'jar.asc'],
+            [archive: signedJavadoc, classifier: 'javadoc', extension: 'jar.asc'],
+            [archive: signedJar, classifier: 'null', extension: 'jar.asc']
+    ]
+}
+
+def getPomSignature = {
+    return project.tasks.signPom.signatureFiles.collect{ it }[0]
+}
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'jar'
+                name 'The Android Plugin for Totcy.'
+                url siteUrl
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'broccoli'
+                        name 'caiyufei'
+                        email 'superfly1106@gmail.com'
+                    }
+                }
+
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+        repo = "bridge" //bintray 上面 Package名字
+        name = "bridge-plugin" //bintray 上面项目名
+        desc = 'Android Module Bridge.'
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        labels = 'Groovy'
+        publicDownloadNumbers = true
+        publish = true
+    }
+}

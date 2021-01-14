@@ -15,7 +15,6 @@ buildscript {
 plugins {
     id "java-gradle-plugin"
     id "groovy"
-    id "com.gradle.plugin-publish" version "0.12.0"
 }
 
 repositories {
@@ -38,29 +37,7 @@ sourceSets {
     }
 }
 
-group = "com.cai.plugin"
-version = "1.0.0"
 
-gradlePlugin {
-    plugins {
-        bridgePlugin {
-            id = 'com.cai.plugin.bridge'
-            implementationClass = 'com.cai.open.bridge.BridgePlugin'
-        }
-    }
-}
-
-pluginBundle {
-
-    website = 'http://www.ibyte.link'
-    vcsUrl = 'https://github.com/gittosuperfly/AndroidModuleBridge'
-    description = 'android module bridge'
-    tags = ['bridge', 'module']
-
-    plugins {
-        bridgePlugin {
-            displayName = 'Module Bridge plugin'
-        }
-    }
-}
+//apply from: 'gradlePlugin.gradle'
+apply from: 'jcenter.gradle'
 
