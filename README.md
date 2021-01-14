@@ -14,7 +14,7 @@ For a common component-based Android application, the communication capability b
 
 
 
-# How to join
+## How to join
 
 **Step 1.** Add the jcenter repository to your build file
 
