@@ -1,0 +1,9 @@
+-classpath '/Users/cai/Library/Android/sdk/platforms/android-30/android.jar:/Users/cai/Library/Android/sdk/build-tools/30.0.2/core-lambda-stubs.jar'
+-d '/Users/cai/funny/bridge-plugin/bridge/build/docs/javadoc'
+-doctitle 'bridge 1.0.0 API'
+-notimestamp 
+-quiet 
+-windowtitle 'bridge 1.0.0 API'
+'/Users/cai/funny/bridge-plugin/bridge/src/main/java/com/cai/bridge/ModuleBridge.java'
+'/Users/cai/funny/bridge-plugin/bridge/src/main/java/com/cai/bridge/BaseBridge.kt'
+'/Users/cai/funny/bridge-plugin/bridge/src/main/java/com/cai/bridge/Bridge.kt'

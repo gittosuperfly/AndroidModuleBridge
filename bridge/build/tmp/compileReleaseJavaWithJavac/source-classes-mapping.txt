@@ -1,0 +1,6 @@
+com/cai/bridge/BuildConfig.java
+ com.cai.bridge.BuildConfig
+com/cai/bridge/ModuleBridge.java
+ com.cai.bridge.ModuleBridge
+ com.cai.bridge.ModuleBridge$1
+ com.cai.bridge.ModuleBridge$LazyHolder

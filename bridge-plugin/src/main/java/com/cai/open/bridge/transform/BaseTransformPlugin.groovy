@@ -112,7 +112,7 @@ abstract class BaseTransformPlugin<T> implements Plugin<Project>, BaseTransformC
             onScanFinished()
             log(getName() + "文件扫描结束，共用时: " + (System.currentTimeMillis() - stTime) + "ms")
 
-            log("====== GradlePlugin: [ ' + getPluginName() + ' ] 运行已完成======")
+            log("====== GradlePlugin: [ " + getPluginName() + " ] 已完成======")
         }
 
 

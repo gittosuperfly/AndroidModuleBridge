@@ -8,7 +8,7 @@ def siteUrl = 'https://github.com/gittosuperfly/AndroidModuleBridge' // 项目�
 def gitUrl = 'https://github.com/gittosuperfly/AndroidModuleBridge.git' // Git仓库的url。
 
 group = "com.cai.open"
-version = "1.0.0"
+version = "1.0.1"
 project.archivesBaseName = "bridge-plugin"
 
 task javadocJar(type: Jar, dependsOn: javadoc) {

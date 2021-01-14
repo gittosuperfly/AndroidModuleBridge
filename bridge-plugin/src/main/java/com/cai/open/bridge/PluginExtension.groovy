@@ -3,9 +3,9 @@ package com.cai.open.bridge
 class PluginExtension {
 
     boolean abortOnError = true
-    String bridgeUtilsClass = "com.cai.bridge.ModuleBridge"
-    String bridgeBaseClass = "com.cai.bridge.BaseBridge"
-    String bridgeAnnotationClass = "com.cai.bridge.Bridge"
+    String bridgeUtilsClass = "com.cai.open.bridge.ModuleBridge"
+    String bridgeBaseClass = "com.cai.open.bridge.BaseBridge"
+    String bridgeAnnotationClass = "com.cai.open.bridge.Bridge"
     String onlyScanLibRegex = ""
     String jumpScanLibRegex = ""
 
