@@ -84,7 +84,7 @@ abstract class ScanPlugin<T> implements Plugin<Project>, ScanCallback<T> {
                     )
                     FileUtils.copyDirectory(dir, dest)
 
-                    log("SCAN DIR: ${dirInput.file} -> $dest")
+                    log("SCAN DIR: ${dirInput.file}")
                     scanDir(dest)
                 }
                 input.jarInputs.each { JarInput jarInput ->
@@ -100,11 +100,14 @@ abstract class ScanPlugin<T> implements Plugin<Project>, ScanCallback<T> {
                     FileUtils.copyFile(jar, dest)
 
                     if (isIgnoreScan(jarInput)) {
-                        log("SKIP JAR: $jarName -> $dest")
+                        log("SKIP JAR: $jarName")
                         return
                     }
 
-                    log("SCAN JAR: $jarName -> $dest")
+                    //I'm sorry, I don't know this jar file.
+                    if (jarName != "bfbbdf5009047cc4c82ca92e830106ed585e3434") {
+                        log("SCAN JAR: $jarName")
+                    }
                     scanJar(dest)
                 }
             }
@@ -148,9 +151,7 @@ abstract class ScanPlugin<T> implements Plugin<Project>, ScanCallback<T> {
                 def filePath = file.absolutePath
                 def packagePath = filePath.replace(rootPath, '')
                 def className = packagePath.replace(ScanConfig.SEPARATOR, ".")
-                // delete .class
                 className = className.substring(0, className.length() - 6)
-
                 scanClassFile(file, className, originScannedJarOrDir)
             }
         }

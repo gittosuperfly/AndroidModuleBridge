@@ -11,9 +11,9 @@ class PluginExtension {
     String toString() {
         return "PluginExtension { " +
                 "stopOnError: " + stopOnError +
-                "outputFile: " + outputFile +
+                ", outputFile: " + outputFile +
                 (onlyScanRegex == "" ? "" : ", onlyScanRegex: " + onlyScanRegex) +
                 (skipScanRegex == "" ? "" : ", skipScanRegex: " + skipScanRegex) +
-                " }";
+                " }"
     }
 }

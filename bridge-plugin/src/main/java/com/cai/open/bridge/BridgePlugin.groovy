@@ -31,7 +31,7 @@ class BridgePlugin extends ScanPlugin<PluginExtension> {
     void onScanStarted() {
         String fileName = ext.outputFile
         jsonFile = new File(mProject.projectDir.getAbsolutePath(), fileName)
-        FileUtils.write(jsonFile, "{}", null)
+        FileUtils.write(jsonFile, "{}")
     }
 
     @Override
@@ -98,14 +98,16 @@ class BridgePlugin extends ScanPlugin<PluginExtension> {
                 bridgeDetails.put("bridgePair", bridgeImpl)
                 bridgeDetails.put("notImplemented", notImpl)
                 String apiJson = JsonUtils.getFormatJson(bridgeDetails)
-                log("\n=== Project bridge scan results ===\n")
-                log(apiJson)
-                FileUtils.write(jsonFile, apiJson, null)
-                log("## output to file :" + jsonFile.toString())
+                String divLine = "───────────────────────────────────────────────" +
+                        "────────────────────────────────────────────────────────"
+                apiJson = apiJson.replaceAll("\\n", "\n│")
+                log("## Project bridge scan results >>> \n┌$divLine\n│$apiJson\n└divLine")
+                FileUtils.write(jsonFile, apiJson)
+                log("Output to file : " + jsonFile.toString())
 
                 if (notImpl.size() > 0) {
                     if (ext.stopOnError) {
-                        throw new Exception("You should implement the following Bridge: \n" + notImpl +
+                        throw new Exception("You should implement the following Bridge: \n $notImpl" +
                                 "\nYou can find it in the following file: \n" + jsonFile.toString())
                     }
                 }

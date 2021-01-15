@@ -1,14 +1,11 @@
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-apply plugin: 'maven-publish'
-apply plugin: 'java'
-apply plugin: 'signing'
 
 def siteUrl = 'https://github.com/gittosuperfly/AndroidModuleBridge' // 项目主页。
 def gitUrl = 'https://github.com/gittosuperfly/AndroidModuleBridge.git' // Git仓库的url。
 
 group = "com.cai.open"
-version = "1.0.2"
+version = "1.0.4"
 project.archivesBaseName = "bridge-plugin"
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -57,8 +54,9 @@ install {
     repositories.mavenInstaller {
         pom {
             project {
-                packaging 'jar'
-                name 'The Android Plugin for Totcy.'
+                packaging 'aar'
+                name 'bridge-plugin'
+                description 'android module bridge plugin'
                 url siteUrl
 
                 licenses {
@@ -91,6 +89,7 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 bintray {
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
+
     configurations = ['archives']
     pkg {
         repo = "bridge" //bintray 上面 Package名字
@@ -100,7 +99,6 @@ bintray {
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
         labels = 'Groovy'
-        publicDownloadNumbers = true
         publish = true
     }
 }
