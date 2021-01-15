@@ -6,7 +6,7 @@ It is applicable to solve the communication problem between parallel modules in 
 
 
 
-## What can it do？
+## is What
 
 ![](img/Image1.png)
 
@@ -70,11 +70,13 @@ apply plugin: 'com.cai.open.bridge-plugin'
 
 ## How to use
 
-**Step 1.** Create an abstract class that inherits from the class `BaseBridge`
+**Step 1.** Create an abstract class that inherits from the `BaseBridge` in the common module
 
 ```kotlin
 abstract class MusicBridge : BaseBridge() {
     abstract fun playMusic(music: Music)
+    abstract fun showActivity(context: Context)
+    ...
 }
 ```
 
@@ -100,4 +102,3 @@ playMusicBtn.setOnClickListener {
     ModuleBridge.get(MusicBridge::class.java).playMusic(popMusic)
 }
 ```
-

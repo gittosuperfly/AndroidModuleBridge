@@ -1,6 +1,6 @@
 package com.cai.open.bridge
 
-import com.cai.open.bridge.transform.ZipUtils
+import com.cai.open.bridge.utils.ZipUtils
 import com.cai.open.bridge.visitor.BridgeUtilsClassVisitor
 import org.apache.commons.io.FileUtils
 import org.objectweb.asm.ClassReader

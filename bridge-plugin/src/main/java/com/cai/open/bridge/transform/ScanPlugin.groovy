@@ -4,6 +4,8 @@ import com.android.build.api.transform.*
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.cai.open.bridge.utils.LogUtils
+import com.cai.open.bridge.utils.ZipUtils
 import groovy.io.FileType
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Plugin
@@ -11,7 +13,7 @@ import org.gradle.api.Project
 
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseTransformPlugin<T> implements Plugin<Project>, BaseTransformCallback<T> {
+abstract class ScanPlugin<T> implements Plugin<Project>, ScanCallback<T> {
 
     Project mProject
 
@@ -26,7 +28,7 @@ abstract class BaseTransformPlugin<T> implements Plugin<Project>, BaseTransformC
             LogUtils.init(project)
             project.extensions.create(getPluginName(), getGenericClass())
             def android = project.extensions.getByType(AppExtension)
-            android.registerTransform(new BaseTransform())
+            android.registerTransform(new ScanTransform())
         }
     }
 
@@ -34,11 +36,11 @@ abstract class BaseTransformPlugin<T> implements Plugin<Project>, BaseTransformC
         return ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]
     }
 
-    class BaseTransform extends Transform {
+    class ScanTransform extends Transform {
 
         @Override
         String getName() {
-            return "${getPluginName()}Transform"
+            return getPluginName()
         }
 
         @Override
@@ -60,17 +62,15 @@ abstract class BaseTransformPlugin<T> implements Plugin<Project>, BaseTransformC
         void transform(TransformInvocation transformInvocation)
                 throws TransformException, InterruptedException, IOException {
             super.transform(transformInvocation)
-            log('====== GradlePlugin: [ ' + getPluginName() + ' ] 已启用======')
-            log(getName() + " 扫描开始")
+            log('====== GradlePlugin: [ ' + getPluginName() + ' ] Activated ======')
+            log("## Plugin ext :" + getExt())
+            log("## Project file scan start >>>")
             long stTime = System.currentTimeMillis()
 
             def inputs = transformInvocation.getInputs()
             def outputProvider = transformInvocation.getOutputProvider()
 
             outputProvider.deleteAll()
-
-            log("${getPluginName()}配置信息: $ext")
-
             onScanStarted()
 
             inputs.each { TransformInput input ->
@@ -84,7 +84,7 @@ abstract class BaseTransformPlugin<T> implements Plugin<Project>, BaseTransformC
                     )
                     FileUtils.copyDirectory(dir, dest)
 
-                    log("扫描文件夹: ${dirInput.file} -> $dest")
+                    log("SCAN DIR: ${dirInput.file} -> $dest")
                     scanDir(dest)
                 }
                 input.jarInputs.each { JarInput jarInput ->
@@ -100,19 +100,19 @@ abstract class BaseTransformPlugin<T> implements Plugin<Project>, BaseTransformC
                     FileUtils.copyFile(jar, dest)
 
                     if (isIgnoreScan(jarInput)) {
-                        log("跳过Jar: $jarName -> $dest")
+                        log("SKIP JAR: $jarName -> $dest")
                         return
                     }
 
-                    log("扫描Jar: $jarName -> $dest")
+                    log("SCAN JAR: $jarName -> $dest")
                     scanJar(dest)
                 }
             }
 
             onScanFinished()
-            log(getName() + "文件扫描结束，共用时: " + (System.currentTimeMillis() - stTime) + "ms")
+            log(getName() + "Scan finished, it took: " + (System.currentTimeMillis() - stTime) + "ms")
 
-            log("====== GradlePlugin: [ " + getPluginName() + " ] 已完成======")
+            log("====== GradlePlugin: [ " + getPluginName() + " ] finished ======")
         }
 
 
@@ -132,8 +132,8 @@ abstract class BaseTransformPlugin<T> implements Plugin<Project>, BaseTransformC
         void scanDir(File dir, File originScannedJarOrDir) {
             if (!dir.isDirectory()) return
             String rootPath = dir.getAbsolutePath()
-            if (!rootPath.endsWith(BaseTransformConfig.FILE_SEP)) {
-                rootPath += BaseTransformConfig.FILE_SEP
+            if (!rootPath.endsWith(ScanConfig.SEPARATOR)) {
+                rootPath += ScanConfig.SEPARATOR
             }
 
             dir.eachFileRecurse(FileType.FILES) { File file ->
@@ -147,7 +147,7 @@ abstract class BaseTransformPlugin<T> implements Plugin<Project>, BaseTransformC
 
                 def filePath = file.absolutePath
                 def packagePath = filePath.replace(rootPath, '')
-                def className = packagePath.replace(BaseTransformConfig.FILE_SEP, ".")
+                def className = packagePath.replace(ScanConfig.SEPARATOR, ".")
                 // delete .class
                 className = className.substring(0, className.length() - 6)
 

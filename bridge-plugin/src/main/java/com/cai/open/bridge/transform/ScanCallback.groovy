@@ -2,7 +2,8 @@ package com.cai.open.bridge.transform
 
 import com.android.build.api.transform.JarInput
 
-interface BaseTransformCallback<T> {
+interface ScanCallback<T> {
+
     String getPluginName();
 
     void onScanStarted();
