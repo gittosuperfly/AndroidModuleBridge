@@ -2,7 +2,7 @@
 
 It is applicable to solve the communication problem between parallel modules in Android application modular development.
 
-![](https://img.shields.io/github/license/gittosuperfly/AndroidModuleBridge)   Core: ![Bintray](https://img.shields.io/bintray/v/broccoli/bridge/bridge-core)   Plugin: ![Bintray](https://img.shields.io/bintray/v/broccoli/bridge/bridge-plugin)
+![](https://img.shields.io/github/license/gittosuperfly/AndroidModuleBridge)  ![Bintray](https://img.shields.io/bintray/v/broccoli/bridge/bridge-core?label=bridge-core)   ![Bintray](https://img.shields.io/bintray/v/broccoli/bridge/bridge-plugin?label=bridge-plugin)
 
 
 
