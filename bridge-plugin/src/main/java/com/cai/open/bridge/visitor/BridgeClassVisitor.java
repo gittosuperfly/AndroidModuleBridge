@@ -70,14 +70,14 @@ public class BridgeClassVisitor extends ClassVisitor {
         super.visitEnd();
         if (hasAnnotation) {
             if (!isMock) {
-                BridgeInfo apiInfo = bridgeInfoMap.get(superClassName);
-                if (apiInfo == null || apiInfo.isMock) {
+                BridgeInfo bridgeInfo = bridgeInfoMap.get(superClassName);
+                if (bridgeInfo == null || bridgeInfo.isMock) {
                     bridgeInfoMap.put(superClassName, new BridgeInfo(className, false));
                 } else {
                     throw new IllegalArgumentException("<"
                             + className
                             + "> and <"
-                            + apiInfo.implClass
+                            + bridgeInfo.implClass
                             + "> impl same bridge of <"
                             + superClassName + ">");
                 }

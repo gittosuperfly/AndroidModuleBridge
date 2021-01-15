@@ -104,8 +104,7 @@ abstract class ScanPlugin<T> implements Plugin<Project>, ScanCallback<T> {
                         return
                     }
 
-                    //I'm sorry, I don't know this jar file.
-                    if (jarName != "bfbbdf5009047cc4c82ca92e830106ed585e3434") {
+                    if (jarName.indexOf('.') != -1) {
                         log("SCAN JAR: $jarName")
                     }
                     scanJar(dest)

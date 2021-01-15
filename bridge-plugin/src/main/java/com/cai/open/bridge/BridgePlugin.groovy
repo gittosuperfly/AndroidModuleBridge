@@ -100,8 +100,8 @@ class BridgePlugin extends ScanPlugin<PluginExtension> {
                 String apiJson = JsonUtils.getFormatJson(bridgeDetails)
                 String divLine = "───────────────────────────────────────────────" +
                         "────────────────────────────────────────────────────────"
-                apiJson = apiJson.replaceAll("\\n", "\n│")
-                log("## Project bridge scan results >>> \n┌$divLine\n│$apiJson\n└divLine")
+                String printJson = apiJson.replaceAll("\\n", "\n│")
+                log("## Project bridge scan results >>> \n┌$divLine\n│$printJson\n└$divLine")
                 FileUtils.write(jsonFile, apiJson)
                 log("Output to file : " + jsonFile.toString())
 

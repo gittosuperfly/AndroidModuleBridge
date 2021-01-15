@@ -6,7 +6,7 @@ It is applicable to solve the communication problem between parallel modules in 
 
 
 
-## is What
+## Is What
 
 ![](img/Image1.png)
 
@@ -42,7 +42,7 @@ allprojects {
 buildscript {
     dependencies {
         ...
-        classpath "com.cai.open:bridge-plugin:1.0.1"
+        classpath "com.cai.open:bridge-plugin:version"
     }
 }
 ```
@@ -102,3 +102,50 @@ playMusicBtn.setOnClickListener {
     ModuleBridge.get(MusicBridge::class.java).playMusic(popMusic)
 }
 ```
+
+
+
+**After compilation, the bridge table will be generated in the app module.**
+
+
+
+## Other
+
+### Extension
+
+In the app module, `bridge{}` is used to add extensions. The contents that can be added and their default values are as follows:
+
+```
+boolean stopOnError = true
+String outputFile = "bridge_table.json"
+String onlyScanRegex = ""
+String skipScanRegex = ""
+```
+
+eg:
+
+```groovy
+android {
+  ...
+}
+
+bridge {
+  outputFile "test_bridge.json"
+}
+```
+
+### Mock
+
+When mock and other implementation modules exist at the same time, the mock implementation shall prevail.
+
+```
+@Bridge(isMock = true)
+class MusicBridgeMockImpl : MusicBridge() {
+	fun mockFunction(){
+		...
+	}
+}
+```
+
+
+
