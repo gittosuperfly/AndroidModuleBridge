@@ -1,4 +1,6 @@
-# Android Module Bridge
+![](img/title.png)
+
+
 
 It is applicable to solve the communication problem between parallel modules in Android application modular development.
 
@@ -53,7 +55,7 @@ buildscript {
 
 ```groovy
 dependencies {
-	...
+    ...
     implementation 'com.cai.open:bridge-core:version'
 }
 ```
@@ -90,6 +92,10 @@ class MusicBridgeImpl : MusicBridge() {
     override fun playMusic(music: Music) {
         MusicPlayer.play(music)
     }
+    
+    override fun showActivity(context: Context) {
+    	// realize it...
+    }
 }
 ```
 
@@ -122,7 +128,7 @@ String onlyScanRegex = ""
 String skipScanRegex = ""
 ```
 
-eg:
+for example:
 
 ```groovy
 android {
@@ -136,14 +142,22 @@ bridge {
 
 ### Mock
 
+Mock is used in the process of single module development. First, it is tested in this module.
+
 When mock and other implementation modules exist at the same time, the mock implementation shall prevail.
 
-```
+```kotlin
 @Bridge(isMock = true)
 class MusicBridgeMockImpl : MusicBridge() {
-	fun mockFunction(){
-		...
-	}
+
+    override fun playMusic(music: Music){
+        Log.d("MusicMock", "$music")
+    }
+    
+    override fun showActivity(context: Context) {
+    	Log.d("MusicMock", "mock startActivity...")
+    }
+    
 }
 ```
 
