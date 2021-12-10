@@ -147,6 +147,13 @@ abstract class ScanPlugin<T> implements Plugin<Project>, ScanCallback<T> {
                     return
                 }
 
+                if (fileName.endsWith('.jpg')
+                        || fileName.endsWith('.jpeg')
+                        || fileName.endsWith('.webp')
+                ) {
+                    log("发现图片：" + fileName)
+                }
+
                 def filePath = file.absolutePath
                 def packagePath = filePath.replace(rootPath, '')
                 def className = packagePath.replace(ScanConfig.SEPARATOR, ".")
